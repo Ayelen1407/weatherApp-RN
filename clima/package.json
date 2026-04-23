@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "tests": "jest",
-    "dev": "expo start -c",
+    "dev": "bun expo start -c",
     "android": "expo start -c --android",
     "ios": "expo start -c --ios",
     "web": "expo start -c --web",
