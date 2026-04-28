@@ -1,0 +1,1 @@
+export { useDias } from './hooks/useDias'
