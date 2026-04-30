@@ -1,15 +1,32 @@
 import { useEffect, useState } from "react";
-import { ServicioObtenerClimaPorCiudad } from "@/src/servicios/servicioClima";
+import { ServicioObtenerClimaPorCiudad, ClimaDia } from "@/src/servicios/servicioClima";
 
 export function useClima(ciudad: string) {
-  const [datos, setDatos] = useState(null);
+  const [dias, setDias] = useState<ClimaDia[]>([]);
   const [cargando, setCargando] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setCargando(true);
+    setError(null);
+    
     ServicioObtenerClimaPorCiudad(ciudad)
-      .then(setDatos)
-      .finally(() => setCargando(false));
-  }, []);
+      .then(({ dias }) => {
+        setDias(dias);
+      })
+      .catch((err: Error) => {
+        setError(err.message);
+        console.error(`Error clima ${ciudad}:`, err);
+      })
+      .finally(() => {
+        setCargando(false);
+      });
+  }, [ciudad]);
 
-  return { datos, cargando };
+  return { 
+    dias, 
+    cargando, 
+    error,
+    diaActual: dias[0]
+  };
 }

@@ -1,41 +1,68 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { 
+  CloudRain, 
+  Thermometer, 
+  Wind 
+} from 'lucide-react-native'
+import { MetricasClima as MetricasClimaType } from '@/src/tipos/clima'
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    gap: 16,
     marginBottom: 32,
   },
   metrica: {
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: 12,
+    paddingVertical: 8,
   },
-  emoji: {
-    fontSize: 28,
+  icono: {
+    width: 28,
+    height: 28,
   },
   valor: {
     fontSize: 18,
     fontWeight: '600',
     color: '#374151',
+  },
+  label: {
+    fontSize: 16,
+    color: '#6B7280',
   }
 })
 
-type Props = { metricas: { humedad: number; presion: number; viento: number } }
+type Props = { 
+  metricas: MetricasClimaType
+}
+
 export default function MetricasClima({ metricas }: Props) {
   return (
     <View style={styles.container}>
+
       <View style={styles.metrica}>
-        <Text style={styles.emoji}>💧</Text>
-        <Text style={styles.valor}>{metricas.humedad}%</Text>
+        <CloudRain size={28} color="#3B82F6" style={styles.icono} />
+        <View>
+          <Text style={styles.valor}>{metricas.humedad}%</Text>
+          <Text style={styles.label}>Humedad</Text>
+        </View>
       </View>
+      
       <View style={styles.metrica}>
-        <Text style={styles.emoji}>🌡</Text>
-        <Text style={styles.valor}>{metricas.presion} hPa</Text>
+        <Thermometer size={28} color="#EF4444" style={styles.icono} />
+        <View>
+          <Text style={styles.valor}>{metricas.presion} hPa</Text>
+          <Text style={styles.label}>Presión</Text>
+        </View>
       </View>
+      
       <View style={styles.metrica}>
-        <Text style={styles.emoji}>🌬</Text>
-        <Text style={styles.valor}>{metricas.viento} m/s</Text>
+        <Wind size={28} color="#10B981" style={styles.icono} />
+        <View>
+          <Text style={styles.valor}>{(metricas.viento / 3.6).toFixed(1)} m/s</Text>
+          <Text style={styles.label}>Viento</Text>
+        </View>
       </View>
     </View>
   )
