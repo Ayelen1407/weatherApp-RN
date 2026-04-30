@@ -1,38 +1,26 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
-import { useDias } from '../../dias'
+import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
+
+export function BotonNavegacionEntreDias({ dia, onPrev, onNext }) {
+  return (
+    <View style={styles.container} testID="navigation-container">
+      <TouchableOpacity onPress={onPrev} testID="navigation-prev-button">
+        <ChevronLeft size={28} />
+      </TouchableOpacity>
+
+      <Text testID="navigation-current-day">{dia}</Text>
+
+      <TouchableOpacity onPress={onNext} testID="navigation-next-button">
+        <ChevronRight size={28} />
+      </TouchableOpacity>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 32,
+    flexDirection: "row",
+    gap: 20,
+    alignItems: "center",
   },
-  button: {
-    fontSize: 24,
-    fontWeight: '900',
-    color: '#111827',
-  },
-  fecha: {
-    fontSize: 24,
-    fontWeight: '900',
-    color: '#111827',
-  }
-})
-
-export default function NavegadorDias() {
-  const { fechaActual, navegarAnterior, navegarSiguiente } = useDias()
-  
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={navegarAnterior}>
-        <Text style={styles.button}>{'<'}</Text>
-      </TouchableOpacity>
-      <Text style={styles.fecha}>{fechaActual}</Text>
-      <TouchableOpacity onPress={navegarSiguiente}>
-        <Text style={styles.button}>{'>'}</Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+});

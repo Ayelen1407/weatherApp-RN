@@ -1,9 +1,15 @@
-import { useState, useEffect } from 'react'
-import { useDias } from '../../dias'
-import { obtenerClimaVillaLugano } from '../../servicios/servicioClima'
-import { ClimaDia } from '../../tipos/clima'
+import { useEffect, useState } from "react";
+import { ServicioObtenerClimaPorCiudad } from "@/src/servicios/servicioClima";
 
-export function useClima() {
-  const { diaActual, climaDia } = useDias()
-  return { climaActual: climaDia }
+export function useClima(ciudad: string) {
+  const [datos, setDatos] = useState(null);
+  const [cargando, setCargando] = useState(true);
+
+  useEffect(() => {
+    ServicioObtenerClimaPorCiudad(ciudad)
+      .then(setDatos)
+      .finally(() => setCargando(false));
+  }, []);
+
+  return { datos, cargando };
 }

@@ -1,10 +1,7 @@
-import { CloudRain, Sun, Cloud } from 'lucide-react-native'
-
-export const condicionesIcono = {
-  'soleado': Sun,
-  'nublado': Cloud,
-  'lluvia': CloudRain,
-  'clear': Sun,           
-  'clouds': Cloud,        
-  'rain': CloudRain       
-} as const
+export const MAPA_CONDICIONES_CLIMA: Record<number, string> = {
+  1000: "Sun",
+  1006: "Cloud",
+  1009: "Cloud",
+  1180: "CloudRain",
+  1183: "CloudRain",
+};
