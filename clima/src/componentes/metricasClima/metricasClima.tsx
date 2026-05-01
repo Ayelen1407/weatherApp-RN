@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { 
-  CloudRain, 
-  Thermometer, 
-  Wind 
+import {
+  CloudRain,
+  Thermometer,
+  Wind
 } from 'lucide-react-native'
 import { MetricasClima as MetricasClimaType } from '@/src/tipos/clima'
 
@@ -33,14 +33,14 @@ const styles = StyleSheet.create({
   }
 })
 
-type Props = { 
+type Props = {
   metricas: MetricasClimaType
+  testID?: string
 }
 
-export default function MetricasClima({ metricas }: Props) {
+export default function MetricasClima({ metricas, testID }: Props) {
   return (
-    <View style={styles.container}>
-
+    <View style={styles.container} testID={testID}>
       <View style={styles.metrica}>
         <CloudRain size={28} color="#3B82F6" style={styles.icono} />
         <View>

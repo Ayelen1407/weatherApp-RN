@@ -12,7 +12,10 @@ const styles = StyleSheet.create({
   }
 })
 
-type Props = { nombre: string }
+type Props = { 
+  nombre: string 
+  testID?: string
+}
 export default function Ciudad({ nombre }: Props) {
   return <Text style={styles.ciudad}>{nombre}</Text>
 }

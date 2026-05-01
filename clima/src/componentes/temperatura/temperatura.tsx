@@ -1,4 +1,3 @@
-// /temperatura/temperatura.tsx
 import { Text, StyleSheet, Dimensions } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
@@ -34,9 +33,9 @@ export function TextoTemperaturaActual({
 
 const styles = StyleSheet.create({
   temp: {
-    fontWeight: "900",  // Más bold
+    fontWeight: "900", 
     textAlign: "center",
     letterSpacing: -1,
-    lineHeight: 72,     // Responsive
+    lineHeight: 72,
   },
 });

@@ -1,1 +1,0 @@
-export { useClima } from './hooks/useClima'

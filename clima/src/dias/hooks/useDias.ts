@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { obtenerClimaVillaLugano } from '../../servicios/servicioClima'
-import { ClimaDia } from '../../tipos/clima'
+import { ClimaDia, MetricasClima } from '../../tipos/clima'
 
 export function useDias() {
   const [dias, setDias] = useState<ClimaDia[]>([])
@@ -22,15 +22,22 @@ export function useDias() {
 
   const climaDia = dias[diaActual] || dias[0]
   const fechaActual = climaDia?.fecha || ''
+  
+  const metricas: MetricasClima = {
+    humedad: climaDia?.humedad || 0,
+    presion: climaDia?.presion || 0,
+    viento: climaDia?.viento || 0
+  }
 
   const navegarAnterior = () => setDiaActual(prev => Math.max(0, prev - 1))
   const navegarSiguiente = () => setDiaActual(prev => Math.min(dias.length - 1, prev + 1))
 
-  return { 
-    diaActual, 
-    climaDia, 
-    fechaActual, 
-    navegarAnterior, 
+  return {
+    diaActual,
+    climaDia,
+    fechaActual,
+    metricas,
+    navegarAnterior,
     navegarSiguiente,
     loading
   }
