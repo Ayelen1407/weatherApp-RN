@@ -4,14 +4,14 @@ import { ClimaDia, MetricasClima } from '../../tipos/clima'
 
 export function useDias() {
   const [dias, setDias] = useState<ClimaDia[]>([])
-  const [diaActual, setDiaActual] = useState(0)
+  const [diaActual, setDiaActual] = useState(1)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     obtenerClimaVillaLugano()
       .then(({ dias }) => {
         setDias(dias)
-        setDiaActual(0)
+        setDiaActual(1)
         setLoading(false)
       })
       .catch(error => {

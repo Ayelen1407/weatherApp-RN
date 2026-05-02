@@ -14,7 +14,7 @@ export default function PantallaClima() {
     navegarAnterior, 
     navegarSiguiente, 
     loading,
-    diaActual  // Para calcular disabled
+    diaActual
   } = useDias();
 
   if (loading) return <Text>Cargando...</Text>;
@@ -26,7 +26,7 @@ export default function PantallaClima() {
         onPrev={navegarAnterior}
         onNext={navegarSiguiente}
         disabledPrev={diaActual === 0}
-        disabledNext={diaActual === 2}  // 3 días máximo
+        disabledNext={diaActual === 2}
       />
 
       <Ciudad nombre="VILLA LUGANO" testID="header-city-name" />
