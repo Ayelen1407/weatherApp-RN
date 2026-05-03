@@ -34,8 +34,9 @@ export function TextoTemperaturaActual({
 const styles = StyleSheet.create({
   temp: {
     fontWeight: "900", 
+    fontSize: 25,
     textAlign: "center",
     letterSpacing: -1,
-    lineHeight: 72,
+    lineHeight: 75,
   },
 });

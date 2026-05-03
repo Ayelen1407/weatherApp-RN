@@ -4,7 +4,15 @@
     "slug": "clima",
     "extra": {
       "apiKey": "0e6baee6a7034be9a2c181720262904"},
-    "puglins": ["expo-constants"],
+    "puglins": [
+      "expo-constants",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir que la app detecte tu ubicación."
+        }
+      ] 
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",

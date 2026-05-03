@@ -7,14 +7,14 @@ type Props = {
 
 export function VistaIconoClima({ Icono }: Props) {
   return (
-    <View style={styles.container} testID="icon-weather-container">
-      <Icono size={80} color="#333" />
+    <View style={[styles.container, { marginTop: -5 }]} testID="icon-weather-container">
+      <Icono size={100} color="#333" />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginVertical: 22,
     alignItems: 'center',
   },
 });

@@ -9,10 +9,12 @@ export interface ClimaDia {
   humedad: number
   presion: number
   viento: number
+  chanceLluvia: number
 }
 
 export interface MetricasClima {
   humedad: number
   presion: number
   viento: number
+  chanceLluvia: number
 }

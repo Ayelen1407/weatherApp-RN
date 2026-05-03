@@ -6,13 +6,13 @@ const BASE_URL = "https://api.weatherapi.com/v1";
 
 interface RespuestaForecast {
   forecast: {
-	forecastday: ClimaDiaAPI[];
+    forecastday: ClimaDiaAPI[];
   };
 }
 
 interface RespuestaHistory {
   forecast: {
-	forecastday: ClimaDiaAPI[];
+    forecastday: ClimaDiaAPI[];
   };
 }
 
@@ -20,79 +20,85 @@ interface ClimaDiaAPI {
   date: string;
   date_epoch: number;
   day: {
-	condition: {
-  	text: string;
-  	icon: string;
-  	code: number;
-	};
-	avgtemp_c: number;
-	maxtemp_c: number;
-	mintemp_c: number;
-	avghumidity: number;
-	avgpressure_mb: number;
-	maxwind_kph: number;
-	totalprecip_mm: number;
-	daily_chance_of_rain: number;
+    condition: {
+      text: string;
+      icon: string;
+      code: number;
+    };
+    avgtemp_c: number;
+    maxtemp_c: number;
+    mintemp_c: number;
+    avghumidity: number;
+    avgpressure_mb: number;
+    maxwind_kph: number;
+    totalprecip_mm: number;
+    daily_chance_of_rain: number;
   };
 }
 
-function transformarDia(dia: ClimaDiaAPI, label?: string): ClimaDia {
+function formatearFecha(date: Date): string {
+  const dia = date.getDate().toString().padStart(2, '0');
+  const mes = (date.getMonth() + 1).toString().padStart(2, '0');
+  return `${dia}/${mes}`;
+}
+
+function transformarDia(dia: ClimaDiaAPI, fechaCalculada: Date): ClimaDia {
   return {
-	fecha: label || dia.date,
-	condicion: dia.day.condition.text,
-	icono: dia.day.condition.icon,
-	temp: Math.round(dia.day.avgtemp_c),
-	min: Math.round(dia.day.mintemp_c),
-	max: Math.round(dia.day.maxtemp_c),
-	humedad: Math.round(dia.day.avghumidity),
-	presion: Math.round(dia.day.avgpressure_mb),
-	viento: Math.round(dia.day.maxwind_kph),
-	codigoCondicion: dia.day.condition.code,
+    fecha: formatearFecha(fechaCalculada),
+    condicion: dia.day.condition.text,
+    icono: dia.day.condition.icon,
+    temp: Math.round(dia.day.avgtemp_c),
+    min: Math.round(dia.day.mintemp_c),
+    max: Math.round(dia.day.maxtemp_c),
+    humedad: Math.round(dia.day.avghumidity),
+    presion: Math.round(dia.day.avgpressure_mb),
+    viento: Math.round(dia.day.maxwind_kph),
+    codigoCondicion: dia.day.condition.code,
+	chanceLluvia: Math.round(dia.day.daily_chance_of_rain)
   };
 }
 
 export async function ServicioObtenerClimaPorCiudad(ciudad: string): Promise<{ dias: ClimaDia[] }> {
   try {
-
-	const fechaHoy = new Date();
-	const fechaAyer = new Date(fechaHoy);
-	fechaAyer.setDate(fechaAyer.getDate() - 1);
-	const fechaAyerStr = fechaAyer.toISOString().split('T')[0];
-
-	const urlForecast = `${BASE_URL}/forecast.json?key=${API_KEY}&q=${ciudad}&days=2&aqi=no&alerts=no`;
+    const hoy = new Date();
+    const ayer = new Date(hoy);
+    ayer.setDate(ayer.getDate() - 1);
+    const manana = new Date(hoy);
+    manana.setDate(manana.getDate() + 1);
     
-	const urlHistory = `${BASE_URL}/history.json?key=${API_KEY}&q=${ciudad}&dt=${fechaAyerStr}&aqi=no&alerts=no`;
+    const fechaAyerStr = ayer.toISOString().split('T')[0];
 
-	console.log('Fetching:', { ciudad, fechaAyerStr });
+    console.log('FECHAS HOY:', {
+      ayer: formatearFecha(ayer),
+      hoy: formatearFecha(hoy),
+      manana: formatearFecha(manana),
+      sistema: hoy.toLocaleDateString('es-AR')
+    });
 
-	const [forecastRes, historyRes] = await Promise.all([
-  	fetch(urlForecast),
-  	fetch(urlHistory)
-	]);
+    const urlForecast = `${BASE_URL}/forecast.json?key=${API_KEY}&q=${ciudad}&days=2&aqi=no&alerts=no`;
+    const urlHistory = `${BASE_URL}/history.json?key=${API_KEY}&q=${ciudad}&dt=${fechaAyerStr}&aqi=no&alerts=no`;
 
-	if (!forecastRes.ok) {
-  	throw new Error(`Forecast error: ${forecastRes.status} ${forecastRes.statusText}`);
-	}
-	if (!historyRes.ok) {
-  	throw new Error(`History error: ${historyRes.status} ${historyRes.statusText}`);
-	}
+    const [forecastRes, historyRes] = await Promise.all([
+      fetch(urlForecast),
+      fetch(urlHistory)
+    ]);
 
-	const forecastData: RespuestaForecast = await forecastRes.json();
-	const historyData: RespuestaHistory = await historyRes.json();
+    if (!forecastRes.ok) throw new Error(`Forecast: ${forecastRes.status}`);
+    if (!historyRes.ok) throw new Error(`History: ${historyRes.status}`);
 
-	const dias: ClimaDia[] = [
-  	transformarDia(historyData.forecast.forecastday[0]),
-  	transformarDia(forecastData.forecast.forecastday[0]),
-  	transformarDia(forecastData.forecast.forecastday[1]),
-	];
+    const forecastData: RespuestaForecast = await forecastRes.json();
+    const historyData: RespuestaHistory = await historyRes.json();
 
-	console.log('Datos obtenidos:', dias.map(d => ({ fecha: d.fecha, temp: d.temp })));
-
-	return { dias };
-
+    const dias: ClimaDia[] = [
+      transformarDia(historyData.forecast.forecastday[0], ayer),
+      transformarDia(forecastData.forecast.forecastday[0], hoy),
+      transformarDia(forecastData.forecast.forecastday[1], manana)
+    ];
+    
+    return { dias };
   } catch (error) {
-	console.error('❌ Error en ServicioObtenerClimaPorCiudad:', error);
-	throw new Error(`Error al obtener clima de ${ciudad}: ${error}`);
+    console.error('Error:', error);
+    throw error;
   }
 }
 
@@ -100,18 +106,22 @@ export const obtenerClimaVillaLugano = () =>
   ServicioObtenerClimaPorCiudad("Villa Lugano, Buenos Aires");
 
 export async function ServicioObtenerClimaSimple(ciudad: string): Promise<{ dias: ClimaDia[] }> {
+  const hoy = new Date();
+  const ayer = new Date(hoy);
+  ayer.setDate(ayer.getDate() - 1);
+  const manana = new Date(hoy);
+  manana.setDate(manana.getDate() + 1);
+  
   const urlForecast = `${BASE_URL}/forecast.json?key=${API_KEY}&q=${ciudad}&days=3&aqi=no&alerts=no`;
- 
   const res = await fetch(urlForecast);
-  if (!res.ok) throw new Error("Error en forecast simple");
+  if (!res.ok) throw new Error("Error forecast");
 
   const data: RespuestaForecast = await res.json();
- 
   return {
-	dias: [
-  	transformarDia(data.forecast.forecastday[0], "Ayer"),
-  	transformarDia(data.forecast.forecastday[0], "Hoy"),
-  	transformarDia(data.forecast.forecastday[1], "Mañana"),
-	]
+    dias: [
+      transformarDia(data.forecast.forecastday[0], ayer),
+      transformarDia(data.forecast.forecastday[0], hoy),
+      transformarDia(data.forecast.forecastday[1], manana),
+    ]
   };
 }

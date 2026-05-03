@@ -1,4 +1,3 @@
-// navegadorDias.tsx - SOLO FORMATO "5/1" (día/mes)
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { ChevronLeft, ChevronRight } from "lucide-react-native";
 
@@ -11,7 +10,7 @@ type Props = {
 };
 
 function formatearFecha(fecha: string): string {
-  // 🆕 SIEMPRE formato "5/1" (día/mes)
+
   try {
 	const date = new Date(fecha);
 	if (isNaN(date.getTime())) return fecha;

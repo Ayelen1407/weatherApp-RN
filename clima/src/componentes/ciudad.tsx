@@ -3,19 +3,15 @@ import { Text, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   ciudad: {
-    fontSize: 36,
+    fontSize: 34,
     fontWeight: '900',
     textAlign: 'center',
     color: '#111827',
-    marginTop: 32,
+    marginTop: 35,
     marginBottom: 48,
   }
 })
 
-type Props = { 
-  nombre: string 
-  testID?: string
-}
-export default function Ciudad({ nombre }: Props) {
-  return <Text style={styles.ciudad}>{nombre}</Text>
+export default function Ciudad({ nombre, testID }: { nombre: string, testID?: string }) {
+  return <Text style={styles.ciudad} testID={testID}>{nombre}</Text>
 }
