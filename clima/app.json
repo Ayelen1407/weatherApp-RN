@@ -3,7 +3,12 @@
     "name": "clima",
     "slug": "clima",
     "extra": {
-      "apiKey": "0e6baee6a7034be9a2c181720262904"},
+      "apiKey": "0e6baee6a7034be9a2c181720262904",
+      "router": {},
+      "eas": {
+        "projectId": "2ab76943-a189-4add-a3b5-8475036bdf67"
+      }
+    },
     "puglins": [
       "expo-constants",
       [
@@ -11,7 +16,7 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Permitir que la app detecte tu ubicación."
         }
-      ] 
+      ]
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -33,7 +38,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ayelenq.clima"
     },
     "web": {
       "bundler": "metro",
