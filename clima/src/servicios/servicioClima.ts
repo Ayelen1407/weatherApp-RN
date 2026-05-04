@@ -109,8 +109,8 @@ export async function ServicioObtenerClimaSimple(ciudad: string): Promise<{ dias
   const hoy = new Date();
   const ayer = new Date(hoy);
   ayer.setDate(ayer.getDate() - 1);
-  const manana = new Date(hoy);
-  manana.setDate(manana.getDate() + 1);
+  const mañana = new Date(hoy);
+  mañana.setDate(mañana.getDate() + 1);
   
   const urlForecast = `${BASE_URL}/forecast.json?key=${API_KEY}&q=${ciudad}&days=3&aqi=no&alerts=no`;
   const res = await fetch(urlForecast);
@@ -121,7 +121,7 @@ export async function ServicioObtenerClimaSimple(ciudad: string): Promise<{ dias
     dias: [
       transformarDia(data.forecast.forecastday[0], ayer),
       transformarDia(data.forecast.forecastday[0], hoy),
-      transformarDia(data.forecast.forecastday[1], manana),
+      transformarDia(data.forecast.forecastday[1], mañana),
     ]
   };
 }

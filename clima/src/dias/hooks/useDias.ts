@@ -13,7 +13,7 @@ export function useDias() {
   const cargarClima = useCallback(async () => {
     setLoading(true)
     try {
-      console.log('🌍 Cargando clima para:', ciudad)
+      console.log('Cargando clima para:', ciudad)
       const { dias: nuevosDias } = await ServicioObtenerClimaPorCiudad(ciudad)
       setDias(nuevosDias)
       setDiaActual(1)
